@@ -11,6 +11,7 @@ var fs = require('fs')
 var port = process.env.PORT || 5000
 var firebase = require('firebase-admin')
 var serviceAccount = require('../omi-lum-firebase-adminsdk-0d7kn-cb4b11534e.json');
+var sessionID = 'session_1'
 
 firebase.initializeApp({
 	credential: firebase.credential.cert(serviceAccount),
@@ -24,23 +25,31 @@ function ref(path) {
 // setup the OSC connection
 // ------------------------------------------------------------------------
 function setupOSC(settings) {
-	var client = new osc.Client(settings.ip, settings.port);
 
-	// there are 8 knobs
+	// clear out the log! (DEMO only)
+	ref(`history/${sessionID}/meta`).set(null)
 
-	// we have many users
+	var oscServer = new osc.Server(settings.port, settings.receiver_ip);
+	oscServer.on('/now_playing', function (msg, rinfo) {
+		if (msg && msg.length >= 1 && msg[1] != '' && msg[1] != '<empty>') {
+			var trackname = msg[1];
+			var timestamp = new Date().getTime()
+			ref(`history/${sessionID}/meta/${timestamp}`).set({trackname: trackname})
+		}
 
-	// bin the users by 8
+	});
 
-	// avg the bin based on the number of users
-	// and send that to add /sessions/{knob_num}/{value}
+	var client = new osc.Client(settings.sender_ip, settings.port);
 	var averageEnergy = 0
 	var targetEnergy = 0;
 	setInterval(function() {
 		averageEnergy *= 0.76;
+		if(averageEnergy < 0) {
+			averageEnergy = 0;
+		}
 		client.send('/session', averageEnergy, function () {
 		});
-		console.log(averageEnergy);
+		// console.log(averageEnergy);
 	}, 100)
 
 
@@ -75,10 +84,11 @@ jsonfile.readFile(settingsFile, function(err, obj) {
 	app.use(express.static(__dirname));
 	app.get('*', function(req,res){
 		var data = {
-			ip: obj.ip, 
 			port: obj.port,
 			network_name: obj.network_name,
-			session_name: obj.session_name
+			session_name: obj.session_name,
+			sender_ip: obj.sender_ip,
+			receiver_ip: obj.receiver_ip,
 		}
 		res.render(path.resolve(__dirname, 'app'), data);
 	});

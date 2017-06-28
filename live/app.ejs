@@ -31,9 +31,15 @@
 				</p>
 			</div>
 			<div class="field">
-				<label class="label">Server IP</label>
+				<label class="label">Sender IP</label>
 				<p class="control">
-					<input class="input" type="text" name="network_name" v-model="ip" placeholder="ip">
+					<input class="input" type="text" name="sender_ip" v-model="sender_ip" placeholder="Sender IP">
+				</p>
+			</div>
+			<div class="field">
+				<label class="label">Receiver IP</label>
+				<p class="control">
+					<input class="input" type="text" name="receiver_ip" v-model="receiver_ip" placeholder="Receiver IP">
 				</p>
 			</div>
 			<div class="field">
@@ -60,7 +66,8 @@
 			el: '#app',
 			data: {
 				network_name: "<%= network_name %>",
-				ip: "<%= ip %>",
+				sender_ip: "<%= sender_ip %>",
+				receiver_ip: "<%= receiver_ip %>",
 				port: <%= port %>,
 				session_name: "<%= session_name %>",
 			},

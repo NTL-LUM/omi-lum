@@ -65,7 +65,7 @@ export default {
             
             var drawColor = 255 - (vm.energy * 255)
 
-            this.fillStyle = `black`
+            this.fillStyle = `rgb(27, 15, 39)`
             this.fillRect(0, 0, this.width, this.height)
 
             this.fillStyle = `rgba(255, 255, 255, ${vm.energy})`
@@ -176,7 +176,7 @@ export default {
     top: 0;
     left: 0;
     height: 40px;
-    background: yellow;
+    background: RGB(111, 55, 140);
     z-index: 10;
 }
 </style>

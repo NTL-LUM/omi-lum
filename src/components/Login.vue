@@ -2,7 +2,12 @@
 <div class="section is-full-height login-container">
     <div class="container">
         <div class="is-text-centered" v-if="!authenticated">
-            <div class="logo">LUM Logo Here</div>
+            <div class="logo">
+                <img src="/static/img/logo.png" alt="">
+            </div>
+            <h2 class="logo-name">
+                <img src="../assets/lum.svg" alt="">
+            </h2>
             <a href="/auth" class="spotify-login-button button">Sign in with Spotify</a>
         </div>  
     </div>
@@ -37,9 +42,17 @@ export default {
     padding: 30px;
 }
 .login-container {
-    margin-top: -50px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-image: url(../assets/login-bg.png); 
+}
+.logo-name {
+    color: white;
+    font-size: 35px;
+    color: #FFFFFF;
+    letter-spacing: 0;
+    line-height: 47px;
+    margin-bottom: 30px;
 }
 </style>
