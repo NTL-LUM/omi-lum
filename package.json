@@ -1,7 +1,7 @@
 {
-  "name": "vue-firebase-app",
+  "name": "omi-lum",
   "version": "1.0.0",
-  "description": "Boilerplate for a vue and firebase app, auth, profiles, data",
+  "description": "App for team Lum for the OMI summer program. This app connects spotify users to a Live session were there interactions will contribute to a live Dj/Mix session.",
   "author": "Todd Vanderlin <tvanderlin@ideo.com>",
   "private": true,
   "scripts": {

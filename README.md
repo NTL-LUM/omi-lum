@@ -1,6 +1,5 @@
-# vue-firebase-app
-
-> Boilerplate for a vue and firebase app, auth, profiles, data
+# LUM
+App for team Lum for the OMI summer program. This app connects spotify users to a Live session were there interactions will contribute to a live Dj/Mix session.
 
 ## Build Setup
 
