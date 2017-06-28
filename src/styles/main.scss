@@ -1,0 +1,24 @@
+.is-text-centered {
+	text-align: center;
+}
+.is-margin-centered {
+	margin: 0 auto;
+}
+
+.is-full-height {
+	height: 100vh;
+}
+
+.profile-image {
+	border-radius: 50%;
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+
+.spotify-login-button {
+	background-color: rgb(20, 190, 85);
+	border: none;
+	border-radius: 30px;
+	color: white;
+	text-transform: uppercase;
+}
