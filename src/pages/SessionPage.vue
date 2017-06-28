@@ -11,7 +11,7 @@ var app;
 var points = []
 var MAX_POINTS = 100
 var MAX_ENERGY = 20
-var ENERGY_TIMER_SECONDS = 3
+var ENERGY_TIMER_SECONDS = 10
 
 var sessionID = 'session_1' 
 
@@ -129,10 +129,12 @@ export default {
 
         energyTimer = setInterval(function() {
             var avg = 0;
-            for (var i = 0; i < energyHistory.length; i++) {
-                avg += energyHistory[i];
+            if (energyHistory.length) {
+                for (var i = 0; i < energyHistory.length; i++) {
+                    avg += energyHistory[i];
+                }
+                avg /= energyHistory.length
             }
-            avg /= energyHistory.length
             energyHistory = []
             var timestamp = new Date().getTime()
             var energyPayload = {
