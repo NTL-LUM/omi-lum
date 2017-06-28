@@ -5,9 +5,12 @@
   "author": "Todd Vanderlin <tvanderlin@ideo.com>",
   "private": true,
   "scripts": {
-    "dev": "node build/dev-server.js",
-    "start": "node build/dev-server.js",
-    "build": "node build/build.js"
+    "dev": "NODE_ENV=production node build/dev-server.js",
+    "build": "node build/build.js",
+    "lint": "eslint --ext .js,.vue src",
+    "start": "node server",
+    "prod-test": "NODE_ENV=production node server",
+    "postinstall": "npm run build"
   },
   "dependencies": {
     "autoprefixer": "^6.7.2",
