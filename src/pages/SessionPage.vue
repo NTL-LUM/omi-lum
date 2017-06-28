@@ -31,16 +31,12 @@ export default {
     		container: this.$refs.session
     	})
     	app.setup = function() {
-    		for (var i = 0; i < MAX_POINTS; i++) {
-    			points[i] = new Vec2f(0, 0)
-    		}
+    		
     	}
     	app.draw = function() {
 			this.beginPath();
-			this.strokeStyle = 'black'
-			for (var i = points.length - 1; i >= 1; i--) {
-				points[i].set(points[i-1])
-			}
+			this.fillStyle = 'black'
+			
     		var perps = []
     		var strip = []
     		var perp;
@@ -64,12 +60,18 @@ export default {
     		}
 	    	this.lineTo( strip[0].x, strip[0].y);
 
-	    	this.stroke();
+	    	this.fill();
     	}
     	app.mousemove = function() {
     		var pt = app.mouse
-    		points[0].set(pt.x, pt.y)
+    		points.push(new Vec2f(pt.x, pt.y))
+            if (points.length > MAX_POINTS) {
+                points.shift()
+            }
     	}
+        app.mousedown = function() {
+            points = []
+        }
     },
     destroyed() {
     	app.destroy()
