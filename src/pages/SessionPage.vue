@@ -26,6 +26,7 @@ export default {
     created() {
     },
     mounted() {
+        var vm = this
     	points = []
     	app = Sketch.create({
     		container: this.$refs.session
@@ -36,7 +37,7 @@ export default {
     	app.draw = function() {
 			this.beginPath();
 			this.fillStyle = 'black'
-			
+			if (!points.length) return
     		var perps = []
     		var strip = []
     		var perp;
@@ -64,10 +65,20 @@ export default {
     	}
     	app.mousemove = function() {
     		var pt = app.mouse
+            var nx = pt.x / app.width
+            var ny = pt.y / app.height
     		points.push(new Vec2f(pt.x, pt.y))
             if (points.length > MAX_POINTS) {
                 points.shift()
             }
+
+            // we need to add this point
+            var sessionID = 'session_1' 
+            var authID = vm.authID
+
+            // for right now we are just storing a single point of data
+            vm.$db.ref(`sessions/${sessionID}/${authID}`).update({x: nx, y: ny})
+
     	}
         app.mousedown = function() {
             points = []
