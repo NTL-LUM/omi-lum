@@ -34,20 +34,30 @@ function setupOSC(settings) {
 
 	// avg the bin based on the number of users
 	// and send that to add /sessions/{knob_num}/{value}
-
-	
-
+	var averageEnergy = 0
+	var targetEnergy = 0;
+	setInterval(function() {
+		averageEnergy *= 0.76;
+		client.send('/session', averageEnergy, function () {
+		});
+		console.log(averageEnergy);
+	}, 100)
 
 
 	ref('sessions/session_1').on('value', function(snap) {
 		var data = snap.val()
-		console.log(data);
+		var avg = 0;
+		var t = 0;
 		for(var k in data) {
+			t ++
 			var energy = data[k].energy
-			console.log(`User ${k} -- ${energy}`);
-			client.send('/session', energy, function () {
-			});
+			//console.log(`User ${k} -- ${energy}`);
+			avg += energy
 		}
+		if(t > 0) {
+			avg /= t
+		}
+		averageEnergy = avg
 	})
 
 	console.log('Setup OSC', settings);

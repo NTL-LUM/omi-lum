@@ -35,7 +35,7 @@ export default {
     watch: {
     },
     created() {
-        this.$db.ref(`sessions/${sessionID}_history/${this.authID}`).set(null)
+        this.$db.ref(`history/${sessionID}/${this.authID}`).set(null)
     },
     mounted() {
         var userEnergy = 0
@@ -141,7 +141,7 @@ export default {
                 fb_timestamp: vm.firebaseTimestamp(),
                 energy: vm.energy
             }
-            vm.$db.ref(`sessions/${sessionID}_history/${vm.authID}/${timestamp}`).set(energyPayload)
+            vm.$db.ref(`history/${sessionID}/${vm.authID}/${timestamp}`).set(energyPayload)
             console.log('energyTimer', avg);
 
         }, ENERGY_TIMER_SECONDS * 1000)
