@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.2/css/bulma.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js"></script>
+		<title>Lüm</title>
+	</head>
+<body>
+	<div class="section" id="app">
+		<div class="container">
+			<div class="field">
+				<label class="label">Network Name</label>
+				<p class="control">
+					<input class="input" type="text" name="network_name" v-model="network_name" placeholder="Network Name">
+				</p>
+			</div>
+			<div class="field">
+				<label class="label">Server IP</label>
+				<p class="control">
+					<input class="input" type="text" name="network_name" v-model="ip" placeholder="ip">
+				</p>
+			</div>
+			<div class="field">
+				<label class="label">Port</label>
+				<p class="control">
+					<input class="input" type="text" name="port" v-model="port" placeholder="Port">
+				</p>
+			</div>
+			<div class="field">
+				<label class="label">Session Name</label>
+				<p class="control">
+					<input class="input" type="text" name="port" v-model="session_name" placeholder="Session Name">
+				</p>
+			</div>
+			<div class="field">
+			  	<p class="control">
+			    	<button class="button is-primary" @click="saveSettings">Save</button>
+			  	</p>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		new Vue({
+			el: '#app',
+			data: {
+				network_name: "<%= network_name %>",
+				ip: "<%= ip %>",
+				port: <%= port %>,
+				session_name: "<%= session_name %>",
+			},
+			methods: {
+				saveSettings() {
+					console.log('message');
+				}
+			}
+		})
+		console.log('Live App');
+	</script>
+</body>
+</html>
