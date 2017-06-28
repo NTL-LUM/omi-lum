@@ -1,4 +1,4 @@
-var env = process.env.NODE_ENV;
+var env = 'production' //process.env.NODE_ENV;
 import firebase from 'firebase'
 import config from './config'
 firebase.initializeApp(config.firebase)

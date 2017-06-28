@@ -41,12 +41,11 @@ function setupOSC(settings) {
 
 	ref('sessions/session_1').on('value', function(snap) {
 		var data = snap.val()
+		console.log(data);
 		for(var k in data) {
-			var x = data[k].x
-			var y = data[k].y
-			console.log(`User ${k} -- ${x} ${y}`);
-			client.send('/session', x, y, function () {
-				console.log('data sent');
+			var energy = data[k].energy
+			console.log(`User ${k} -- ${energy}`);
+			client.send('/session', energy, function () {
 			});
 		}
 	})
