@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import VueFire from 'vuefire'
 import App from './App'
 import router from './router'
 import store from './store'
@@ -9,6 +10,8 @@ import mixins from './mixins'
 import filters from './filters'
 import directives from './directives'
 import components from './components'
+
+Vue.use(VueFire)
 
 // register components
 for (let key in components) Vue.component(key, components[key])

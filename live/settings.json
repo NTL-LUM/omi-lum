@@ -3,5 +3,6 @@
 	"session_name": "session_1",
 	"sender_ip": "10.205.1.37",
 	"receiver_ip": "localhost",
-	"port": 1234
+	"port": 1234,
+	"server_port": 3333
 }

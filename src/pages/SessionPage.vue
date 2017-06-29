@@ -1,7 +1,17 @@
 <template>
     <div class="session" ref="session">
-        <h1 class="energy">{{energy.toFixed(4)}}</h1>
+        <h1 class="energy">{{energyPct}}</h1>
         <div class="energy-bar" :style="{width: `${energyBarWidth}%`}"></div>
+        <div class="connected-users">
+            <ul>
+                <li v-for="user in connectedUsers">
+                    <div class="user-photo">
+                        <img :src="user.photoURL" alt="">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <router-link :to="{path: '/'}" class="back-button button">Back</router-link>
     </div>   
 </template>
 
@@ -22,6 +32,8 @@ export default {
     props: {},
     data() {
         return {
+            usersPresence: null,
+            users: null,
             energy: 1,
             energyBarWidth: 0
         }
@@ -31,11 +43,25 @@ export default {
     methods: {
     },
     computed: {
+        energyPct() {
+            return (this.energy * 100).toFixed(0)
+        },
+        connectedUsers() {
+            var users = []
+            for(var k in this.usersPresence) {
+                if (k != '.key' && this.usersPresence[k]) {
+                    users.push(this.users[k])
+                }
+            }
+            return users;
+        }
     },
     watch: {
     },
     created() {
         this.$db.ref(`history/${sessionID}/users/${this.authID}`).set(null)
+        this.$bindAsObject('users', this.$db.ref('users'))
+        this.$bindAsObject('usersPresence', this.$db.ref('presence'))
     },
     mounted() {
         var userEnergy = 0
@@ -125,6 +151,9 @@ export default {
         app.mousedown = function() {
             points = []
         }
+        app.mouseup = function() {
+            userEnergy = 0
+        }
 
         energyTimer = setInterval(function() {
             var avg = 0;
@@ -173,10 +202,45 @@ export default {
 
 .energy-bar {
     position: absolute;
-    top: 0;
+    bottom: 40px;
     left: 0;
-    height: 40px;
+    height: 5px;
     background: RGB(111, 55, 140);
-    z-index: 10;
+    z-index: 30;
+}
+.connected-users {
+    max-width: 200px;
+    pointer-events: none;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    ul {
+        display: flex;
+    }
+    li {
+        margin-left: 5px;
+        margin-right: 5px;
+        .user-photo {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1px solid white;
+            img {
+                width: 30px;
+            }
+        }
+    }
+}
+.back-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    text-transform: uppercase;
+    font-size: 13px;
+    border-radius: 20px;
+    border: none;
+    color: white;
+    background: RGB(111, 55, 140);
 }
 </style>

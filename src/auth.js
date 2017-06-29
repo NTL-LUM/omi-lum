@@ -30,6 +30,16 @@ export default {
 							displayName: user.displayName
 						}
 
+						// var amOnline = new Firebase('https://<demo>.firebaseio.com/.info/connected');
+						var userRef = db.ref('presence/' + user.uid);
+						userRef.set(true);
+						userRef.onDisconnect().set(false);
+
+						// amOnline.on('value', function(snapshot) {
+						// if (snapshot.val()) {
+						// }
+						// });
+
 						// update the record with for this user
 						snap.ref.update(payload).then(() => {
 							store.commit('authProfile', payload)

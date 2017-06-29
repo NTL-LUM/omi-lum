@@ -29,7 +29,7 @@ function setupOSC(settings) {
 	// clear out the log! (DEMO only)
 	ref(`history/${sessionID}/meta`).set(null)
 
-	var oscServer = new osc.Server(settings.port, settings.receiver_ip);
+	var oscServer = new osc.Server(settings.server_port, settings.receiver_ip);
 	oscServer.on('/now_playing', function (msg, rinfo) {
 		if (msg && msg.length >= 1 && msg[1] != '' && msg[1] != '<empty>') {
 			var trackname = msg[1];
