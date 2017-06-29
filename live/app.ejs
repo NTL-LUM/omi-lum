@@ -9,6 +9,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
+	    <script src="https://unpkg.com/vuefire/dist/vuefire.js"></script>
 		<script>
 			var config = {
 				apiKey: "AIzaSyCAmNrgHi-bPoZh7vf-eQlTA0-YD9QBIFk",
@@ -70,6 +71,15 @@
 		.connected-users img {
             width: 30px;
         }
+        .session {
+        	margin-top: 30px;
+        }
+        .session ul {
+        	display: table;
+        }
+        .session h1 {
+        	color: white;
+        }
 		</style>
 		<title>Lüm</title>
 
@@ -78,11 +88,13 @@
 	<div class="section" id="app">
 		<div class="container">
 			<div class="columns is-multiline">
-				<div class="column is-6 is-offset-3">
+				<div class="column is-12">
 					<div class="is-text-centered logo-container">
 						<img class="logo" src="/img/logo.png" alt=""><br>
 						<img class="logo" src="/img/lum.svg" alt="">
 					</div>
+				</div>
+				<div class="column is-6">
 					<div class="field">
 						<label class="label">Network Name</label>
 						<p class="control">
@@ -135,6 +147,18 @@
 			                </li>
 			            </ul>
 					</div>
+
+				</div>
+
+				<div class="column is-3">
+					<div class="session">
+			            <label class="label">Session</label>
+						 <ul>
+			                <li v-for="item in session.meta">
+			                    <h1>{{item.trackname}}</h1>
+			                </li>
+			            </ul>
+		            </div>
 				</div>	
 			</div>
 		</div>
@@ -147,7 +171,7 @@
 		}
 
 		console.log('ENV ', env);
-
+		// Vue.install(VueFire)
 		new Vue({
 			el: '#app',
 			data: {
@@ -160,6 +184,7 @@
 				receiver_ip: "<%= receiver_ip %>",
 				receiver_port: <%= receiver_port %>,
 				session_name: "<%= session_name %>",
+				session: {}
 			},
 			computed: {
 				connectedUsers() {
@@ -185,7 +210,8 @@
 						}
 					}
 				})
-
+				this.$bindAsObject('session', ref('history/session_1'))
+				
 				ref('users').on('value', function(snap) {
 					var data = snap.val()
 					for(var k in data) {
