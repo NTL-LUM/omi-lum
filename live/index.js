@@ -52,7 +52,7 @@ function setupOSC(settings) {
 		}
 		client.send('/session', averageEnergy, function () {
 		});
-		// console.log(averageEnergy);
+		console.log(averageEnergy);
 	}, 100)
 
 
