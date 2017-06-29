@@ -3,10 +3,12 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link href="https://fonts.googleapis.com/css?family=Comfortaa:400,700|Lato:400,700" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.2/css/bulma.min.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
 		<script>
 			var config = {
 				apiKey: "AIzaSyCAmNrgHi-bPoZh7vf-eQlTA0-YD9QBIFk",
@@ -18,60 +20,190 @@
 			};
 			firebase.initializeApp(config);
 		</script>
+		<style type="text/css">
+		body {
+			font-family: 'Comfortaa', cursive;
+			background-color: rgb(27, 15, 39);
+			height: 100vh;
+			/*font-family: 'Lato', sans-serif;*/
+		}
+		.section {
+			background-color: rgb(27, 15, 39);
+		}
+		.label {
+			color: white;
+			font-weight: bold;
+		}
+		.input, .button, .button.is-primary {
+			color: white;
+			border: none;
+		    background: rgb(111, 55, 140);
+		}
+		.is-text-centered {
+			text-align: center;
+		}
+		.logo {
+			margin: 0 auto;
+			text-align: center; 
+		}
+		.logo-container {
+			margin-bottom: 30px;
+		}
+		
+		.connected-users {
+			margin-top: 30px;
+		}
+		.connected-users ul {
+	        display: flex;
+	    }
+		.connected-users li {
+	        margin-left: 5px;
+	        margin-right: 5px;
+	    }
+		.connected-users .user-photo {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1px solid white;
+        }
+		.connected-users img {
+            width: 30px;
+        }
+		</style>
 		<title>Lüm</title>
 
 	</head>
 <body>
 	<div class="section" id="app">
 		<div class="container">
-			<div class="field">
-				<label class="label">Network Name</label>
-				<p class="control">
-					<input class="input" type="text" name="network_name" v-model="network_name" placeholder="Network Name">
-				</p>
-			</div>
-			<div class="field">
-				<label class="label">Sender IP</label>
-				<p class="control">
-					<input class="input" type="text" name="sender_ip" v-model="sender_ip" placeholder="Sender IP">
-				</p>
-			</div>
-			<div class="field">
-				<label class="label">Receiver IP</label>
-				<p class="control">
-					<input class="input" type="text" name="receiver_ip" v-model="receiver_ip" placeholder="Receiver IP">
-				</p>
-			</div>
-			<div class="field">
-				<label class="label">Port</label>
-				<p class="control">
-					<input class="input" type="text" name="port" v-model="port" placeholder="Port">
-				</p>
-			</div>
-			<div class="field">
-				<label class="label">Session Name</label>
-				<p class="control">
-					<input class="input" disabled="disabled" type="text" name="port" v-model="session_name" placeholder="Session Name">
-				</p>
-			</div>
-			<div class="field">
-			  	<p class="control">
-			    	<button class="button is-primary" @click="saveSettings">Save</button>
-			  	</p>
+			<div class="columns is-multiline">
+				<div class="column is-6 is-offset-3">
+					<div class="is-text-centered logo-container">
+						<img class="logo" src="/img/logo.png" alt=""><br>
+						<img class="logo" src="/img/lum.svg" alt="">
+					</div>
+					<div class="field">
+						<label class="label">Network Name</label>
+						<p class="control">
+							<input class="input" type="text" name="network_name" v-model="network_name" placeholder="Network Name">
+						</p>
+					</div>
+
+					<div class="field is-grouped">
+						<p class="control is-expanded">
+							<label class="label">Sender IP</label>
+							<input class="input" type="text" name="sender_ip" v-model="sender_ip" placeholder="Sender IP">
+						</p>
+						<p class="control is-expanded">
+							<label class="label">Port</label>
+							<input class="input" type="text" name="sender_port" v-model="sender_port" placeholder="Sender Port">
+						</p>
+					</div>
+
+					<div class="field is-grouped">
+						<p class="control is-expanded">
+							<label class="label">Receiver IP</label>
+							<input class="input" type="text" name="receiver_ip" v-model="receiver_ip" placeholder="Receiver IP">
+						</p>
+						<p class="control is-expanded">
+						<label class="label">Port</label>
+							<input class="input" type="text" name="receiver_port" v-model="receiver_port" placeholder="Receiver Port">
+						</p>
+					</div>
+					<div class="field">
+						<label class="label">Session Name</label>
+						<p class="control">
+							<input class="input" type="text" name="port" v-model="session_name" placeholder="Session Name">
+						</p>
+					</div>
+					
+					<div class="field">
+					  	<p class="control">
+					    	<button class="button is-danger" @click="clearSession">Clear Session</button>
+					  	</p>
+					</div>
+
+					<div class="connected-users">
+						<label class="label">Connected Users</label>
+						 <ul>
+			                <li v-for="user in connectedUsers">
+			                    <div class="user-photo">
+			                        <img :src="user.photoURL" alt="">
+			                    	{{user.displayName}}
+			                    </div>
+			                </li>
+			            </ul>
+					</div>
+				</div>	
 			</div>
 		</div>
 	</div>
 	<script type="text/javascript">
+		var env = "<%= env %>"
+		var appName = "<%= appName %>"
+		function ref(path) {
+			return firebase.database().ref(`${appName}/${env}/${path}`)
+		}
+
+		console.log('ENV ', env);
+
 		new Vue({
 			el: '#app',
 			data: {
+				isLoaded: false,
+				users: {},
+				usersPresence: {},
 				network_name: "<%= network_name %>",
 				sender_ip: "<%= sender_ip %>",
+				sender_port: <%= sender_port %>,
 				receiver_ip: "<%= receiver_ip %>",
-				port: <%= port %>,
+				receiver_port: <%= receiver_port %>,
 				session_name: "<%= session_name %>",
 			},
+			computed: {
+				connectedUsers() {
+					var users = []
+					if (Object.keys(this.users).length && Object.keys(this.usersPresence).length) {
+			            for(var k in this.usersPresence) {
+			                if (k != '.key' && this.usersPresence[k]) {
+			                    users.push(this.users[k])
+			                }
+			            }
+		        	}
+		            return users;
+				}
+			},
+			mounted() {
+				var vm = this;
+				ref('presence').on('value', function(snap) {
+					var data = snap.val()
+					for(var k in data) {
+						if (k != '.key') {
+							var u = data[k]
+							vm.$set(vm.usersPresence, k, u)
+						}
+					}
+				})
+
+				ref('users').on('value', function(snap) {
+					var data = snap.val()
+					for(var k in data) {
+						if (k != '.key') {
+							var u = data[k]
+							vm.$set(vm.users, k, u)
+						}
+					}
+				})
+			},
 			methods: {
+				clearSession() {
+					axios.post('/clear').then(function (response) {
+				    	console.log(response.data);
+				  	}).catch(function (error) {
+				    	console.log(error);
+				  	});
+				},
 				saveSettings() {
 					console.log('message');
 				}

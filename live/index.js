@@ -29,7 +29,10 @@ function setupOSC(settings) {
 	// clear out the log! (DEMO only)
 	ref(`history/${sessionID}/meta`).set(null)
 
-	var oscServer = new osc.Server(settings.server_port, settings.receiver_ip);
+	console.log('sender '+settings.sender_ip+":"+settings.sender_port);
+	console.log('receiver '+settings.receiver_ip+":"+settings.receiver_port);
+
+	var oscServer = new osc.Server(settings.receiver_port, settings.receiver_ip);
 	oscServer.on('/now_playing', function (msg, rinfo) {
 		if (msg && msg.length >= 1 && msg[1] != '' && msg[1] != '<empty>') {
 			var trackname = msg[1];
@@ -39,7 +42,7 @@ function setupOSC(settings) {
 
 	});
 
-	var client = new osc.Client(settings.sender_ip, settings.port);
+	var client = new osc.Client(settings.sender_ip, settings.sender_port);
 	var averageEnergy = 0
 	var targetEnergy = 0;
 	setInterval(function() {
@@ -74,21 +77,29 @@ function setupOSC(settings) {
 
 // read in the settings file
 // ------------------------------------------------------------------------
-jsonfile.readFile(settingsFile, function(err, obj) {
+jsonfile.readFile(settingsFile, function(err, settings) {
 	if (err) {
-		console.log('There is an error in the settings.json file');
+		console.log('There is an error in the settings.json file', err);
 		return;
 	}
 
 	app.set('view engine', 'ejs')
-	app.use(express.static(__dirname));
+	app.use(express.static(path.resolve(__dirname)));
+
+	app.post('/clear', function(req, res) {
+		setupOSC(settings)
+		return res.json({status: 'cleared'})
+	})
 	app.get('*', function(req,res){
 		var data = {
-			port: obj.port,
-			network_name: obj.network_name,
-			session_name: obj.session_name,
-			sender_ip: obj.sender_ip,
-			receiver_ip: obj.receiver_ip,
+			receiver_port: settings.receiver_port,
+			sender_port: settings.sender_port,
+			network_name: settings.network_name,
+			session_name: settings.session_name,
+			sender_ip: settings.sender_ip,
+			receiver_ip: settings.receiver_ip,
+			env: env,
+			appName: process.env.APP_NAME,
 		}
 		res.render(path.resolve(__dirname, 'app'), data);
 	});
@@ -97,8 +108,8 @@ jsonfile.readFile(settingsFile, function(err, obj) {
 	})
 
 	// -------------------------------------
-	setupOSC(obj)
-	console.log('Settings', obj);
+	setupOSC(settings)
+	console.log('Settings', settings);
 })
 
 
