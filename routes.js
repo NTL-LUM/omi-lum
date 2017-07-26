@@ -10,25 +10,27 @@ admin.initializeApp({
 
 module.exports = function(app) {
 	
-	const spotifyRef = () => {
+	var spotifyRef = function(req) {
+		var redirectURL = req.protocol + '://' + req.get('host');
 		return new SpotifyWebApi({
 			clientId : process.env.SPOTIFY_CLIENT_ID,
 			clientSecret : process.env.SPOTIFY_CLIENT_SECRET,
-			redirectUri : process.env.SPOTIFY_REDIRECT_URI
+			redirectUri : redirectURL+'/callback/'
+			//process.env.SPOTIFY_REDIRECT_URI
 		});
 	}
 
 	app.get('/auth', function(req, res, next) {
 		var scopes = ['user-read-private', 'user-read-recently-played', 'user-top-read', 'user-read-email']
 		var state = req.query.state
-		var authorizeURL = spotifyRef().createAuthorizeURL(scopes, state);
+		var authorizeURL = spotifyRef(req).createAuthorizeURL(scopes, state);
 		return res.redirect(authorizeURL)
 	})
 
 	app.get('/callback', function(req, res, next) {
 		if (req.query.code) {
 			var code = req.query.code
-			var spotify = spotifyRef()
+			var spotify = spotifyRef(req)
 
 			spotify.authorizationCodeGrant(code).then(function(data) {
 
