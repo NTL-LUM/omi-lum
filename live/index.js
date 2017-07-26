@@ -47,6 +47,7 @@ function setupOSC(settings) {
 	var targetEnergy = 0;
 	setInterval(function() {
 		averageEnergy *= 0.76;
+		averageEnergy = averageEnergy.toFixed(5)
 		if(averageEnergy < 0) {
 			averageEnergy = 0;
 		}

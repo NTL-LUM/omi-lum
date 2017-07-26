@@ -217,7 +217,7 @@ export default {
 
             // lerp the motion
             app.acc.lerp(app.accTarget, 0.02)
-            var v = app.acc.length()
+            var v = app.acc.length().toFixed(5)
             if(v < 0) v = 0
             if(v > 1) v = 1
             vm.energy = v;
