@@ -26,6 +26,7 @@ var ENERGY_TIMER_SECONDS = 10
 var sessionID = 'session_1' 
 
 import Vec2f from '../vec2f'
+import SessionApp from '../sessions-app';
 
 export default {
     name: 'SessionPage',
@@ -64,6 +65,8 @@ export default {
         this.$bindAsObject('usersPresence', this.$db.ref('presence'))
     },
     mounted() {
+        new SessionApp(this)
+        return;
         var userEnergy = 0
         var energySmoothed = 0;
         var vm = this
