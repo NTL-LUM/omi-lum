@@ -1,0 +1,47 @@
+{
+  "name": "omi-lum",
+  "scripts": {
+  },
+  "env": {
+    "APP_NAME": {
+      "required": true
+    },
+    "FIREBASE_API_KEY": {
+      "required": true
+    },
+    "FIREBASE_AUTH_DOMAIN": {
+      "required": true
+    },
+    "FIREBASE_DATABASE_URL": {
+      "required": true
+    },
+    "FIREBASE_MESSAGE_SENDER_ID": {
+      "required": true
+    },
+    "FIREBASE_PROJECT_ID": {
+      "required": true
+    },
+    "FIREBASE_STORAGE_BUCKET": {
+      "required": true
+    },
+    "SPOTIFY_CLIENT_ID": {
+      "required": true
+    },
+    "SPOTIFY_CLIENT_SECRET": {
+      "required": true
+    },
+    "SPOTIFY_REDIRECT_URI": {
+      "required": true
+    }
+  },
+  "formation": {
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
