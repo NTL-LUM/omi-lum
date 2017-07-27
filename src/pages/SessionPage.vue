@@ -46,7 +46,6 @@ import GyroNorm from 'gyronorm';
 import Vec2f from '../vec2f'
 import Vec3f from '../vec3f'
 import SessionApp from '../sessions-app';
-
 export default {
     name: 'SessionPage',
     props: {},
@@ -118,7 +117,8 @@ export default {
                 var center = new Vec2f(app.width/2, app.height/2)
                 // var vec = Vec2f.diff(this.pos, center)
                 // var len = vec.length()
-                var accFrc = new Vec2f(app.acc.x, app.acc.y)
+                var scale = 10;
+                var accFrc = new Vec2f(app.acc.x * scale, app.acc.y * scale)
                     accFrc.mult(-this.maxJiggle * energy)
                 // vec.normalize()
                 // vec.mult(energy * 10)
@@ -168,7 +168,8 @@ export default {
             gn.init().then(function() {
                 gn.start(function(data) {
                     vm.info = data.dm
-                    app.accTarget.set(data.dm.x, data.dm.y, data.dm.z);
+                    var div = 5
+                    app.accTarget.set(data.dm.x / div, data.dm.y / div, data.dm.z / div);
                     // Process:
                     // data.do.alpha    ( deviceorientation event alpha value )
                     // data.do.beta     ( deviceorientation event beta value )
@@ -216,9 +217,9 @@ export default {
             if (t > 10) t = 0*/
 
             // lerp the motion
-            app.acc.lerp(app.accTarget, 0.02)
+            app.acc.lerp(app.accTarget, 0.05)
             var v = app.acc.length()
-            v = parseFloat(v.toFixed(8))
+            v = parseFloat(v.toFixed(3))
             if(v < 0) v = 0
             if(v > 1) v = 1
             vm.energy = v;
@@ -248,7 +249,7 @@ export default {
             }
             // we are posting date ever 300 mills
             var timeSinceLastSnap = new Date().getTime() - lastSnapShotTime;
-            if (timeSinceLastSnap > 300) {
+            if (timeSinceLastSnap > 10) {
                 console.log('Post Energy Snap', vm.energy);
                 vm.$db.ref(`sessions/${sessionID}/${vm.authID}`).update({energy:vm.energy})
                 lastSnapShotTime = new Date().getTime()

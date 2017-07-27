@@ -39,22 +39,21 @@ function setupOSC(settings) {
 			var timestamp = new Date().getTime()
 			ref(`history/${sessionID}/meta/${timestamp}`).set({trackname: trackname})
 		}
-
 	});
 
 	var client = new osc.Client(settings.sender_ip, settings.sender_port);
 	var averageEnergy = 0
 	var targetEnergy = 0;
 	setInterval(function() {
-		averageEnergy *= 0.76;
-		averageEnergy = parseFloat(averageEnergy.toFixed(8))
-		if(averageEnergy < 0) {
-			averageEnergy = 0;
-		}
+		// averageEnergy *= 0.976;
+		// averageEnergy = parseFloat(averageEnergy.toFixed(8))
+		// if(averageEnergy < 0.0002) {
+		// 	averageEnergy = 0;
+		// }
 		client.send('/session', averageEnergy, function () {
 		});
 		console.log(averageEnergy);
-	}, 100)
+	}, 10)
 
 
 	ref('sessions/session_1').on('value', function(snap) {
@@ -70,7 +69,7 @@ function setupOSC(settings) {
 		if(t > 0) {
 			avg /= t
 		}
-		averageEnergy = avg
+		averageEnergy = parseFloat(avg.toFixed(8))
 	})
 
 	console.log('Setup OSC', settings);

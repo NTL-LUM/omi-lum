@@ -35,6 +35,16 @@ export default {
 						userRef.set(true);
 						userRef.onDisconnect().set(false);
 
+						// on dis we need to remove the user from the session
+            			var sessionID = 'session_1' // hard-coded for now but later dynamic...
+            			db.ref(`sessions/${sessionID}/${user.uid}`).onDisconnect().set(null)
+
+            			// and when the window blurs
+            			window.addEventListener('blur', function() {
+	            			db.ref(`sessions/${sessionID}/${user.uid}`).set(null)
+						})
+
+
 						// amOnline.on('value', function(snapshot) {
 						// if (snapshot.val()) {
 						// }

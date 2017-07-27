@@ -36,6 +36,7 @@
     "gyronorm": "^2.0.6",
     "html-webpack-plugin": "^2.28.0",
     "http-proxy-middleware": "^0.17.3",
+    "ifvisible.js": "^1.0.6",
     "jsonfile": "^3.0.0",
     "moment": "^2.18.1",
     "node-sass": "^4.5.2",
